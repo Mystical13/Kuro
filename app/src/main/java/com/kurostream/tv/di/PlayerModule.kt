@@ -34,13 +34,16 @@ object PlayerModule {
         val trackSelector = DefaultTrackSelector(context).apply {
             setParameters(
                 buildUponParameters()
-                    .setMaxVideoSize(1920, 1080) // 1080p native max resolution constraint
+                    .setMaxVideoSize(1280, 720) // PHASE_4: 720p max resolution constraint for 1GB RAM devices
                     .setForceLowestBitrate(false)
             )
         }
 
-        val renderersFactory = DefaultRenderersFactory(context)
-            .setEnableDecoderFallback(true)
+        val renderersFactory = DefaultRenderersFactory(context).apply {
+            setEnableDecoderFallback(true)
+            // PHASE_4: Async MediaCodec optimization for low-RAM TV devices
+            setEnableAsynchronousBufferQueueing(true)
+        }
 
         return ExoPlayer.Builder(context, renderersFactory)
             .setLoadControl(loadControl)

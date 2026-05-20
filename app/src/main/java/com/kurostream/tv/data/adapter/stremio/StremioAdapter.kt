@@ -19,10 +19,10 @@ class StremioAdapter @Inject constructor(
     override suspend fun getTrending(): List<Anime> = withContext(Dispatchers.IO) {
         try {
             val response = api.getCatalog("$kitsuAddonUrl/kitsu-anime-trending.json")
-            response.metas.map { meta ->
+            response.metas?.map { meta ->
                 Anime(
                     id = meta.id,
-                    title = meta.name,
+                    title = meta.name ?: "Unknown",
                     episodes = 0,
                     year = meta.releaseInfo?.toIntOrNull() ?: 0,
                     season = 1,
@@ -32,7 +32,7 @@ class StremioAdapter @Inject constructor(
                     rating = meta.imdbRating?.toFloatOrNull() ?: 0f,
                     status = meta.status ?: "UNKNOWN"
                 )
-            }
+            } ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }
@@ -42,10 +42,10 @@ class StremioAdapter @Inject constructor(
         try {
             // Using search catalog for kitsu addon
             val response = api.getCatalog("$kitsuAddonUrl/kitsu-anime-list/search=${query}.json")
-            response.metas.map { meta ->
+            response.metas?.map { meta ->
                 Anime(
                     id = meta.id,
-                    title = meta.name,
+                    title = meta.name ?: "Unknown",
                     episodes = 0,
                     year = meta.releaseInfo?.toIntOrNull() ?: 0,
                     season = 1,
@@ -55,7 +55,7 @@ class StremioAdapter @Inject constructor(
                     rating = meta.imdbRating?.toFloatOrNull() ?: 0f,
                     status = meta.status ?: "UNKNOWN"
                 )
-            }
+            } ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }
@@ -66,7 +66,7 @@ class StremioAdapter @Inject constructor(
             // Example using Torrentio for streams (commonly used stremio addon)
             val torrentioUrl = "https://torrentio.strem.fun/stream/anime"
             val response = api.getStreams("$torrentioUrl/${animeId}:${episodeNumber}.json")
-            response.streams.mapNotNull { stream ->
+            response.streams?.mapNotNull { stream ->
                 if (stream.url != null) {
                     StreamSource(
                         url = stream.url,
@@ -83,7 +83,7 @@ class StremioAdapter @Inject constructor(
                         isTorrent = true
                     )
                 } else null
-            }
+            } ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }

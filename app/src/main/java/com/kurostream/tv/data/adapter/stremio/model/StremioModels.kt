@@ -3,13 +3,13 @@ package com.kurostream.tv.data.adapter.stremio.model
 import com.google.gson.annotations.SerializedName
 
 data class StremioCatalogResponse(
-    @SerializedName("metas") val metas: List<StremioMeta>
+    @SerializedName("metas") val metas: List<StremioMeta>?
 )
 
 data class StremioMeta(
     @SerializedName("id") val id: String,
-    @SerializedName("type") val type: String,
-    @SerializedName("name") val name: String,
+    @SerializedName("type") val type: String?,
+    @SerializedName("name") val name: String?,
     @SerializedName("poster") val poster: String?,
     @SerializedName("background") val background: String?,
     @SerializedName("description") val description: String?,
@@ -19,7 +19,7 @@ data class StremioMeta(
 )
 
 data class StremioStreamResponse(
-    @SerializedName("streams") val streams: List<StremioStream>
+    @SerializedName("streams") val streams: List<StremioStream>?
 )
 
 data class StremioStream(

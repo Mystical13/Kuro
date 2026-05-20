@@ -17,7 +17,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            androidx.tv.material3.MaterialTheme {
+            androidx.tv.material3.MaterialTheme(
+                colorScheme = androidx.tv.material3.MaterialTheme.colorScheme.copy(
+                    background = Color.Black,
+                    surface = Color(0xFF1F222B)
+                )
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

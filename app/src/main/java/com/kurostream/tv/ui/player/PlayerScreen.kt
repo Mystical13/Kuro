@@ -186,14 +186,19 @@ fun PlayerScreen(
                 factory = { ctx ->
                     PlayerView(ctx).apply {
                         player = exoPlayer
-                        this.useController = false
+                        useController = false
+                        // PHASE_4: Low-resource optimization - use SurfaceView (default) explicitly
+                        surfaceType = PlayerView.SURFACE_TYPE_SURFACE_VIEW
                         layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
                     }
                 },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                update = { view ->
+                    view.player = exoPlayer
+                }
             )
 
             // Dynamic Custom UI Control HUD over the video
