@@ -11,11 +11,11 @@
     <application
         android:name=".KuroStreamApp"
         android:allowBackup="false"
-        android:icon="@android:drawable/sym_def_app_icon"
+        android:icon="@drawable/ic_launcher"
         android:label="KuroStream TV"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar"
-        android:banner="@android:drawable/sym_def_app_icon"
+        android:banner="@drawable/ic_banner"
         android:largeHeap="false"
         android:hardwareAccelerated="true">
         <activity
@@ -25,6 +25,7 @@
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>

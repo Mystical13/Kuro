@@ -10,7 +10,7 @@ interface TrailerApi {
         @Query("q") query: String,
         @Query("type") type: String = "video",
         @Query("key") apiKey: String
-    ): String // TODO: PHASE_3 Add data classes
+    ): okhttp3.ResponseBody
 }
 
 interface TrailerExtension {

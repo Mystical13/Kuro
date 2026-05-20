@@ -1,0 +1,13 @@
+-keep class com.kurostream.tv.data.adapter.stremio.model.** { *; }
+-keep class com.kurostream.tv.domain.model.** { *; }
+-keep class * extends androidx.lifecycle.ViewModel { *; }
+-keep @androidx.annotation.Keep class * {*;}
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn okio.**
+-dontwarn retrofit2.**
+-dontwarn coil.**
+-dontwarn javax.annotation.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.conscrypt.**
+-dontwarn org.openjsse.**

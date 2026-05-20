@@ -7,8 +7,8 @@ import retrofit2.http.Path
 
 interface MetadataApi {
     @GET("meta/movie/{id}.json")
-    suspend fun getCinemetaMovie(@Path("id") id: String): String // TODO: PHASE_3 Add data classes
+    suspend fun getCinemetaMovie(@Path("id") id: String): okhttp3.ResponseBody
 
     @POST("graphql")
-    suspend fun getKitsuMetadata(@Body query: Map<String, String>): String // TODO: PHASE_3 Add data classes
+    suspend fun getKitsuMetadata(@Body query: Map<String, String>): okhttp3.ResponseBody
 }
