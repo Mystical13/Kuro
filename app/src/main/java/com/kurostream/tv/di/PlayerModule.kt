@@ -40,7 +40,6 @@ object PlayerModule {
         }
 
         val renderersFactory = DefaultRenderersFactory(context)
-            .forceEnableMediaCodecAsynchronousQueueing()
             .setEnableDecoderFallback(true)
 
         return ExoPlayer.Builder(context, renderersFactory)
