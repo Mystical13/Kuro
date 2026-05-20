@@ -37,19 +37,18 @@ import androidx.tv.foundation.lazy.list.items
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Text
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.kurostream.tv.domain.model.Anime
 
 val FAKE_ANIMES = listOf(
-    Anime("1", "Solo Leveling", 12, 1, 1, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-m1gX3iqITiv9.png", 8.5f, "FINISHED"),
-    Anime("2", "Jujutsu Kaisen", 24, 2, 2, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx112059-m5sCBpwX0uEE.png", 9.0f, "FINISHED"),
-    Anime("3", "Demon Slayer", 26, 3, 3, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-PEn1CTc93DQl.jpg", 8.8f, "FINISHED"),
-    Anime("4", "Attack on Titan", 25, 4, 4, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-73IhOXpJZiMF.jpg", 9.5f, "FINISHED"),
-    Anime("5", "One Piece", 1000, 5, 5, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21-tXMN3Y20PIL9.jpg", 9.2f, "RELEASING")
+    Anime(id = "1", title = "Solo Leveling", episodes = 12, rating = 8.5f, status = "FINISHED", posterUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-m1gX3iqITiv9.png"),
+    Anime(id = "2", title = "Jujutsu Kaisen", episodes = 24, rating = 9.0f, status = "FINISHED", posterUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx112059-m5sCBpwX0uEE.png"),
+    Anime(id = "3", title = "Demon Slayer", episodes = 26, rating = 8.8f, status = "FINISHED", posterUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-PEn1CTc93DQl.jpg"),
+    Anime(id = "4", title = "Attack on Titan", episodes = 25, rating = 9.5f, status = "FINISHED", posterUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-73IhOXpJZiMF.jpg"),
+    Anime(id = "5", title = "One Piece", episodes = 1000, rating = 9.2f, status = "RELEASING", posterUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21-tXMN3Y20PIL9.jpg")
 )
-
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
