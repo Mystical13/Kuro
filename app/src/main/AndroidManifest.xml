@@ -6,17 +6,18 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    <uses-feature android:name="android.software.leanback" android:required="true" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
 
     <application
         android:name=".KuroStreamApp"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/sym_def_app_icon"
         android:label="KuroStream TV"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar"
-        android:banner="@drawable/ic_banner"
+        android:banner="@android:drawable/sym_def_app_icon"
         android:largeHeap="false"
+        android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
