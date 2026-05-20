@@ -11,11 +11,11 @@
     <application
         android:name=".KuroStreamApp"
         android:allowBackup="false"
-        android:icon="@android:drawable/sym_def_app_icon"
+        android:icon="@drawable/logo"
         android:label="KuroStream TV"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar"
-        android:banner="@android:drawable/sym_def_app_icon"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+        android:banner="@drawable/banner"
         android:largeHeap="false"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true">
@@ -23,7 +23,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
