@@ -21,10 +21,10 @@ jobs:
         cache: gradle
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+      uses: android-actions/setup-android@v4
       with:
-        # CORRECT FORMAT: Comma-separated, no spaces, no deprecated 'tools' package
-        packages: platform-tools,build-tools-34.0.0,platforms;android-34,cmdline-tools;latest
+        # CORRECT FORMAT: Space-separated, no deprecated 'tools' package, correct semicolons
+        packages: 'platform-tools build-tools;34.0.0 platforms;android-34'
         accept-android-sdk-licenses: true
 
     - name: Grant execute permission for gradlew

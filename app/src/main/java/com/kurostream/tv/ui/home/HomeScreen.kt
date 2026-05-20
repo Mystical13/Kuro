@@ -51,7 +51,10 @@ val FAKE_ANIMES = listOf(
 )
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    onAnimeClick: (Anime) -> Unit = {},
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val trendingAnimes by viewModel.trendingAnimes.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
@@ -171,6 +174,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                         CatalogRow(
                             title = "Trending on Kitsu",
                             animes = trendingAnimes,
+                            onAnimeClick = onAnimeClick,
                             onAnimeFocused = { focusedAnime = it }
                         )
                     }
@@ -180,6 +184,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                             CatalogRow(
                                 title = "Top Rated",
                                 animes = topRatedAnimes,
+                                onAnimeClick = onAnimeClick,
                                 onAnimeFocused = { focusedAnime = it }
                             )
                         }
@@ -191,7 +196,12 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun CatalogRow(title: String, animes: List<Anime>, onAnimeFocused: (Anime) -> Unit) {
+fun CatalogRow(
+    title: String,
+    animes: List<Anime>,
+    onAnimeClick: (Anime) -> Unit,
+    onAnimeFocused: (Anime) -> Unit
+) {
     Column {
         Text(
             text = title,
@@ -204,7 +214,11 @@ fun CatalogRow(title: String, animes: List<Anime>, onAnimeFocused: (Anime) -> Un
             contentPadding = PaddingValues(horizontal = 56.dp)
         ) {
             items(animes) { anime ->
-                AnimeCard(anime = anime, onFocused = { onAnimeFocused(anime) })
+                AnimeCard(
+                    anime = anime,
+                    onClick = { onAnimeClick(anime) },
+                    onFocused = { onAnimeFocused(anime) }
+                )
                 Spacer(modifier = Modifier.width(16.dp))
             }
         }
@@ -212,9 +226,13 @@ fun CatalogRow(title: String, animes: List<Anime>, onAnimeFocused: (Anime) -> Un
 }
 
 @Composable
-fun AnimeCard(anime: Anime, onFocused: () -> Unit) {
+fun AnimeCard(
+    anime: Anime,
+    onClick: () -> Unit,
+    onFocused: () -> Unit
+) {
     Card(
-        onClick = { /* TODO: Navigate to detail */ },
+        onClick = onClick,
         modifier = Modifier
             .width(140.dp)
             .aspectRatio(2f / 3f)

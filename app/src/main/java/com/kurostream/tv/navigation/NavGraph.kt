@@ -27,6 +27,8 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import com.kurostream.tv.ui.home.HomeScreen
 import com.kurostream.tv.ui.anilist.AniListTabScreen
+import com.kurostream.tv.ui.detail.AnimeDetailScreen
+import com.kurostream.tv.ui.player.PlayerScreen
 
 @Composable
 fun NavGraph() {
@@ -38,7 +40,11 @@ fun NavGraph() {
         Box(modifier = Modifier.fillMaxSize().padding(start = 80.dp)) {
             NavHost(navController = navController, startDestination = "home") {
                 composable("home") {
-                    HomeScreen()
+                    HomeScreen(
+                        onAnimeClick = { anime ->
+                            navController.navigate("detail/${anime.id}")
+                        }
+                    )
                 }
                 composable("discover") {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -52,6 +58,26 @@ fun NavGraph() {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text("Settings Screen", color = Color.White)
                     }
+                }
+                composable("detail/{animeId}") { backStackEntry ->
+                    val animeId = backStackEntry.arguments?.getString("animeId") ?: ""
+                    AnimeDetailScreen(
+                        animeId = animeId,
+                        onPlayClicked = { episodeNumber ->
+                            navController.navigate("player/$animeId/$episodeNumber")
+                        }
+                    )
+                }
+                composable("player/{animeId}/{episodeNumber}") { backStackEntry ->
+                    val animeId = backStackEntry.arguments?.getString("animeId") ?: ""
+                    val episodeNumber = backStackEntry.arguments?.getString("episodeNumber")?.toIntOrNull() ?: 1
+                    PlayerScreen(
+                        animeId = animeId,
+                        episodeNumber = episodeNumber,
+                        onNavigateBack = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
             }
         }
