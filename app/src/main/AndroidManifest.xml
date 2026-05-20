@@ -11,7 +11,7 @@
     <application
         android:name=".KuroStreamApp"
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="KuroStream TV"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar"
