@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -178,7 +179,7 @@ fun AnimeCard(anime: Anime, onFocused: () -> Unit) {
         modifier = Modifier
             .width(140.dp)
             .aspectRatio(2f / 3f)
-            .androidx.compose.ui.focus.onFocusChanged { state ->
+            .onFocusChanged { state ->
                 if (state.isFocused) {
                     onFocused()
                 }
@@ -194,7 +195,7 @@ fun AnimeCard(anime: Anime, onFocused: () -> Unit) {
             focusedScale = 1.1f
         ),
         border = CardDefaults.border(
-            focusedBorder = androidx.tv.foundation.Border(
+            focusedBorder = androidx.tv.material3.Border(
                 border = androidx.compose.foundation.BorderStroke(3.dp, Color(0xFFA66DFF)), // Custom TV accent
                 shape = RoundedCornerShape(8.dp)
             )
