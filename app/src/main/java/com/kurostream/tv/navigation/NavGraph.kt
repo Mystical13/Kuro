@@ -33,15 +33,38 @@ fun NavGraph() {
     val navController = rememberNavController()
     var isRailFocused by remember { mutableStateOf(false) }
 
-    Row(modifier = Modifier.fillMaxSize().background(Color(0xFF0F0F0F))) {
-        // Vertical Navigation Rail
-        val railWidth by animateDpAsState(if (isRailFocused) 200.dp else 80.dp)
+    Box(modifier = Modifier.fillMaxSize().background(Color(0xFF0F0F0F))) {
+        // Main Content Area (Behind the rail, pushed by collapsed width)
+        Box(modifier = Modifier.fillMaxSize().padding(start = 80.dp)) {
+            NavHost(navController = navController, startDestination = "home") {
+                composable("home") {
+                    HomeScreen()
+                }
+                composable("discover") {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Discover Screen", color = Color.White)
+                    }
+                }
+                composable("my_list") {
+                    AniListTabScreen(onSyncClick = {})
+                }
+                composable("settings") {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Settings Screen", color = Color.White)
+                    }
+                }
+            }
+        }
+
+        // Overlay Navigation Rail (Nuvio Style)
+        val railWidth by animateDpAsState(if (isRailFocused) 220.dp else 80.dp, label = "railWidth")
+        val railBackground = if (isRailFocused) Color(0xEA000000) else Color.Transparent
         
         Column(
             modifier = Modifier
                 .width(railWidth)
                 .fillMaxHeight()
-                .background(Color(0xFF161616))
+                .background(railBackground)
                 .padding(vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -78,28 +101,6 @@ fun NavGraph() {
                 onBlur = { isRailFocused = false }
             ) { navController.navigate("settings") }
         }
-
-        // Main Content Area
-        Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
-            NavHost(navController = navController, startDestination = "home") {
-                composable("home") {
-                    HomeScreen()
-                }
-                composable("discover") {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Discover Screen", color = Color.White)
-                    }
-                }
-                composable("my_list") {
-                    AniListTabScreen(onSyncClick = {})
-                }
-                composable("settings") {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Settings Screen", color = Color.White)
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -117,9 +118,9 @@ fun TvNavigationItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(if (isFocused) Color(0xFFA66DFF) else Color.Transparent)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (isFocused) Color(0x33A66DFF) else Color.Transparent)
             .onFocusChanged { state ->
                 isFocused = state.isFocused
                 if (state.isFocused) onFocus() else onBlur()
@@ -132,13 +133,14 @@ fun TvNavigationItem(
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = if (isFocused) Color.White else Color.Gray,
-            modifier = Modifier.padding(16.dp)
+            tint = if (isFocused) Color(0xFFA66DFF) else Color(0xFF7A7A7A),
+            modifier = Modifier.padding(14.dp).size(28.dp)
         )
         AnimatedVisibility(visible = isExpanded) {
             Text(
                 text = text,
-                color = if (isFocused) Color.White else Color.Gray,
+                color = if (isFocused) Color.White else Color(0xFF7A7A7A),
+                fontWeight = if (isFocused) androidx.compose.ui.text.font.FontWeight.Bold else androidx.compose.ui.text.font.FontWeight.Normal,
                 modifier = Modifier.padding(end = 16.dp)
             )
         }

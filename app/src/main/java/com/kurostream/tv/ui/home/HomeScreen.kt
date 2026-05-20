@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,104 +48,139 @@ val FAKE_ANIMES = listOf(
     Anime("5", "One Piece", 1000, 5, 5, "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21-tXMN3Y20PIL9.jpg", 9.2f, "RELEASING")
 )
 
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 @Composable
-fun HomeScreen() {
-    var focusedAnime by remember { mutableStateOf(FAKE_ANIMES.first()) }
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+    val trendingAnimes by viewModel.trendingAnimes.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+
+    var focusedAnime by remember { mutableStateOf<Anime?>(null) }
+
+    // Set first anime as focused once data is loaded
+    LaunchedEffect(trendingAnimes) {
+        if (trendingAnimes.isNotEmpty() && focusedAnime == null) {
+            focusedAnime = trendingAnimes.first()
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().background(Color(0xFF0F0F0F))) {
+        if (isLoading) {
+            // Simple loading state
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Loading trending anime...", color = Color.White)
+            }
+            return@Box
+        }
+
         // Immersive Background
         Crossfade(
-            targetState = focusedAnime.posterUrl,
+            targetState = focusedAnime?.backgroundUrl ?: focusedAnime?.posterUrl,
             animationSpec = tween(700),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            label = "background_crossfade"
         ) { url ->
-            Box(modifier = Modifier.fillMaxSize()) {
-                AsyncImage(
-                    model = url,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
-                    alpha = 0.5f
-                )
-                // Gradient Overlay to blend with UI
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.horizontalGradient(
-                                colors = listOf(
-                                    Color(0xFF0F0F0F),
-                                    Color(0x800F0F0F),
-                                    Color.Transparent
+            if (url != null) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AsyncImage(
+                        model = url,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                        alpha = 0.65f
+                    )
+                    // Nuvio-style heavy deep gradients for readability
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.horizontalGradient(
+                                    colors = listOf(
+                                        Color(0xFF0F0F0F),
+                                        Color(0xDD0F0F0F),
+                                        Color(0x700F0F0F),
+                                        Color.Transparent
+                                    ),
+                                    startX = 0f,
+                                    endX = 1400f
                                 )
                             )
-                        )
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    Color(0x800F0F0F),
-                                    Color(0xFF0F0F0F)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        Color(0x700F0F0F),
+                                        Color(0xFF0F0F0F)
+                                    ),
+                                    startY = 0f,
+                                    endY = 1200f
                                 )
                             )
-                        )
-                )
+                    )
+                }
             }
         }
 
         // Main Content
-        Column(modifier = Modifier.fillMaxSize()) {
-            Spacer(modifier = Modifier.height(60.dp))
-            
-            // Hero details
-            Column(modifier = Modifier.padding(start = 56.dp, end = 56.dp).weight(1f)) {
-                Text(
-                    text = focusedAnime.title,
-                    fontSize = 48.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${focusedAnime.status} • Rating: ${focusedAnime.rating} • ${focusedAnime.episodes} Episodes",
-                    fontSize = 16.sp,
-                    color = Color(0xFFAAAAAA)
-                )
-            }
+        if (focusedAnime != null) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Spacer(modifier = Modifier.height(90.dp))
+                
+                // Hero details
+                Column(modifier = Modifier.padding(start = 56.dp, end = 120.dp).weight(1f)) {
+                    Text(
+                        text = focusedAnime!!.title,
+                        fontSize = 58.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "${focusedAnime!!.year} • ${focusedAnime!!.status} • Rating: ${focusedAnime!!.rating}",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFFA66DFF) // App logo tint!
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = focusedAnime!!.description ?: "No description provided.",
+                        fontSize = 16.sp,
+                        color = Color(0xFFC0C0C0),
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 24.sp
+                    )
+                }
 
-            // Carousel Rows
-            TvLazyColumn(
-                contentPadding = PaddingValues(bottom = 48.dp, top = 24.dp),
-                modifier = Modifier.weight(1.5f)
-            ) {
-                item {
-                    CatalogRow(
-                        title = "Trending Now",
-                        animes = FAKE_ANIMES,
-                        onAnimeFocused = { focusedAnime = it }
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    CatalogRow(
-                        title = "Because you watched Solo Leveling",
-                        animes = FAKE_ANIMES.shuffled(),
-                        onAnimeFocused = { focusedAnime = it }
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    CatalogRow(
-                        title = "Top Rated",
-                        animes = FAKE_ANIMES.shuffled(),
-                        onAnimeFocused = { focusedAnime = it }
-                    )
+                // Carousel Rows
+                TvLazyColumn(
+                    contentPadding = PaddingValues(bottom = 48.dp, top = 24.dp),
+                    modifier = Modifier.weight(1.5f)
+                ) {
+                    item {
+                        CatalogRow(
+                            title = "Trending on Kitsu",
+                            animes = trendingAnimes,
+                            onAnimeFocused = { focusedAnime = it }
+                        )
+                    }
+                    if (trendingAnimes.size > 5) {
+                        item {
+                            Spacer(modifier = Modifier.height(24.dp))
+                            CatalogRow(
+                                title = "Top Rated",
+                                animes = trendingAnimes.shuffled().take(10), // Example usage
+                                onAnimeFocused = { focusedAnime = it }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -193,12 +229,6 @@ fun AnimeCard(anime: Anime, onFocused: () -> Unit) {
         ),
         scale = CardDefaults.scale(
             focusedScale = 1.1f
-        ),
-        border = CardDefaults.border(
-            focusedBorder = androidx.tv.material3.Border(
-                border = androidx.compose.foundation.BorderStroke(3.dp, Color(0xFFA66DFF)), // Custom TV accent
-                shape = RoundedCornerShape(8.dp)
-            )
         )
     ) {
         AsyncImage(

@@ -58,6 +58,7 @@ dependencies {
     implementation("androidx.tv:tv-material:1.0.0-alpha10")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // DI
     implementation("com.google.dagger:hilt-android:2.50")
@@ -72,6 +73,7 @@ dependencies {
 
     // Network & Data
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     
