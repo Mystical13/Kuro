@@ -77,12 +77,25 @@ fun PlayerScreen(
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).apply {
-            // Memory efficient buffer of 8s to handle 1GB FireTV devices cleanly
+            // PHASE_4: 8s buffer caps to handle 1GB RAM FireTV devices
             setLoadControl(
                 androidx.media3.exoplayer.DefaultLoadControl.Builder()
                     .setBufferDurationsMs(8000, 16000, 1000, 2000)
                     .build()
             )
+            // PHASE_4: 720p max resolution constraint
+            val trackSelector = androidx.media3.exoplayer.trackselection.DefaultTrackSelector(context).apply {
+                setParameters(
+                    buildUponParameters()
+                        .setMaxVideoSize(1280, 720)
+                        .setForceLowestBitrate(false)
+                )
+            }
+            setTrackSelector(trackSelector)
+            // PHASE_4: Global Decoder Fallback
+            val renderersFactory = androidx.media3.exoplayer.DefaultRenderersFactory(context)
+                .setEnableDecoderFallback(true)
+            setRenderersFactory(renderersFactory)
         }.build()
     }
 
@@ -188,7 +201,7 @@ fun PlayerScreen(
                         player = exoPlayer
                         useController = false
                         // PHASE_4: Low-resource optimization - use SurfaceView (default) explicitly
-                        surfaceType = PlayerView.SURFACE_TYPE_SURFACE_VIEW
+                        setSurfaceType(1) // SURFACE_TYPE_SURFACE_VIEW
                         layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT

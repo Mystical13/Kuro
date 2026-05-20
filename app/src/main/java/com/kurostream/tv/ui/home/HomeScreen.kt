@@ -243,7 +243,13 @@ fun AnimeCard(
             },
         colors = CardDefaults.colors(
             containerColor = Color(0xFF1E1E1E),
-            focusedContainerColor = Color(0xFF1E1E1E)
+            focusedContainerColor = Color(0xFF2A2A2A) // Slightly lighter for focus distinction
+        ),
+        border = CardDefaults.border(
+            focusedBorder = androidx.tv.material3.Border(
+                border = androidx.compose.foundation.BorderStroke(2.dp, Color(0xFFA66DFF)),
+                shape = RoundedCornerShape(8.dp)
+            )
         ),
         shape = CardDefaults.shape(
             shape = RoundedCornerShape(8.dp)

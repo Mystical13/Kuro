@@ -18,7 +18,7 @@ class StremioAdapter @Inject constructor(
 
     override suspend fun getTrending(): List<Anime> = withContext(Dispatchers.IO) {
         try {
-            val response = api.getCatalog("$kitsuAddonUrl/kitsu-anime-trending.json")
+            val response = api.getCatalog("$kitsuAddonUrl/catalog/anime/kitsu-anime-trending.json")
             response.metas?.map { meta ->
                 Anime(
                     id = meta.id,
@@ -41,7 +41,7 @@ class StremioAdapter @Inject constructor(
     override suspend fun search(query: String): List<Anime> = withContext(Dispatchers.IO) {
         try {
             // Using search catalog for kitsu addon
-            val response = api.getCatalog("$kitsuAddonUrl/kitsu-anime-list/search=${query}.json")
+            val response = api.getCatalog("$kitsuAddonUrl/catalog/anime/kitsu-anime-list/search=${query}.json")
             response.metas?.map { meta ->
                 Anime(
                     id = meta.id,

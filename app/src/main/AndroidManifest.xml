@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
         android:banner="@drawable/banner"
-        android:largeHeap="false"
+        android:largeHeap="true"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true">
         <activity
