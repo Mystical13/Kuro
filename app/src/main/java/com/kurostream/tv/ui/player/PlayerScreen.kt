@@ -200,8 +200,6 @@ fun PlayerScreen(
                     PlayerView(ctx).apply {
                         player = exoPlayer
                         useController = false
-                        // PHASE_4: Low-resource optimization - use SurfaceView (default) explicitly
-                        setSurfaceType(1) // SURFACE_TYPE_SURFACE_VIEW
                         layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
