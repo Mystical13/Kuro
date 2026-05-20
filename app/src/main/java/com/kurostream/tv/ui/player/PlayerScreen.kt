@@ -41,9 +41,12 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.tv.foundation.lazy.list.TvLazyRow
 import androidx.tv.foundation.lazy.list.items
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.tv.material3.Button
 import androidx.tv.material3.ButtonDefaults
-import androidx.tv.material3.CircularProgressIndicator
 import androidx.tv.material3.Text
 import com.kurostream.tv.domain.model.StreamSource
 import kotlinx.coroutines.delay
@@ -183,8 +186,6 @@ fun PlayerScreen(
                 factory = { ctx ->
                     PlayerView(ctx).apply {
                         player = exoPlayer
-                        // SurfaceView rendering constraint for ultra-perf TV overlay
-                        this.useTextureView = false
                         this.useController = false
                         layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -418,5 +419,31 @@ private fun formatTime(ms: Long): String {
         String.format("%02d:%02d:%02d", hours, minutes, seconds)
     } else {
         String.format("%02d:%02d", minutes, seconds)
+    }
+}
+
+@Composable
+fun CircularProgressIndicator(
+    modifier: Modifier = Modifier,
+    color: Color = Color(0xFFA66DFF)
+) {
+    val transition = rememberInfiniteTransition(label = "loading")
+    val angle by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes { durationMillis = 1000 },
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "angle"
+    )
+    Canvas(modifier = modifier.size(40.dp)) {
+        drawArc(
+            color = color,
+            startAngle = angle,
+            sweepAngle = 270f,
+            useCenter = false,
+            style = Stroke(width = 4.dp.toPx(), cap = StrokeCap.Round)
+        )
     }
 }
