@@ -11,15 +11,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 object PlayerModule {
 
     @Provides
-    @Singleton
+    @ActivityRetainedScoped
     @androidx.annotation.OptIn(UnstableApi::class)
     fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
         val loadControl = DefaultLoadControl.Builder()
@@ -49,7 +49,7 @@ object PlayerModule {
     }
 
     @Provides
-    @Singleton
+    @ActivityRetainedScoped
     fun provideMediaSession(
         @ApplicationContext context: Context,
         player: ExoPlayer

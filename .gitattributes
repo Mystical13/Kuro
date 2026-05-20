@@ -1,0 +1,10 @@
+# Treat image and binary assets cleanly to avoid text encoding corruption in git transitions
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.jar binary
+*.aar binary
+*.so binary

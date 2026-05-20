@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    
+    <!-- Deep Cinematic Cosmic Black backdrop -->
+    <path
+        android:fillColor="#0D0D12"
+        android:pathData="M 0 0 L 320 0 L 320 180 L 0 180 Z" />
+
+    <!-- Subtle accent glow on the left -->
+    <path
+        android:fillColor="#1E1333"
+        android:pathData="M 0 0 L 140 0 L 90 180 L 0 180 Z" />
+
+    <!-- Geometric "K" Logo placed on the left side of the banner -->
+    <!-- Scale: Originally 48x48 centered vertically/horizontally -->
+    <!-- Offset: translate x=30, y=56, scale width/height to twice (96x96) -->
+    <path
+        android:fillColor="#A66DFF"
+        android:pathData="M 40 40 L 52 40 L 52 140 L 40 140 Z" />
+    <path
+        android:fillColor="#A66DFF"
+        android:pathData="M 96 40 L 52 84 L 52 110 L 96 66 Z" />
+    <path
+        android:fillColor="#A66DFF"
+        android:pathData="M 52 84 L 96 140 L 96 114 L 52 60 Z" />
+        
+</vector>

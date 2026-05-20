@@ -2,8 +2,8 @@ package com.kurostream.tv.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kurostream.tv.data.adapter.stremio.StremioAdapter
 import com.kurostream.tv.domain.model.Anime
+import com.kurostream.tv.domain.provider.ProviderAggregator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val stremioAdapter: StremioAdapter
+    private val providerAggregator: ProviderAggregator
 ) : ViewModel() {
 
     private val _trendingAnimes = MutableStateFlow<List<Anime>>(emptyList())
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = stremioAdapter.getTrending()
+                val response = providerAggregator.getTrending()
                 if (response.isNotEmpty()) {
                     _trendingAnimes.value = response
                 } else {
