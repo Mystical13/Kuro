@@ -17,16 +17,6 @@ object StremioModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BASIC
-        return OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideStremioApi(okHttpClient: OkHttpClient): StremioApi {
         return Retrofit.Builder()
             .baseUrl("https://v3-cinemeta.strem.io/") // Base url required by Retrofit
