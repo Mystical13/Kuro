@@ -19,6 +19,7 @@ import androidx.tv.foundation.lazy.grid.TvGridCells
 import androidx.tv.foundation.lazy.grid.TvLazyVerticalGrid
 import androidx.tv.foundation.lazy.grid.items
 import androidx.tv.material3.Text
+import androidx.compose.material3.Text as Material3Text
 import com.kurostream.tv.domain.model.Anime
 import com.kurostream.tv.ui.home.AnimeCard
 
@@ -50,7 +51,7 @@ fun SearchScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 32.dp),
-            placeholder = { Text("Enter anime title...", color = Color.Gray) },
+            placeholder = { Material3Text("Enter anime title...", color = Color.Gray) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFF1E1E1E),
                 unfocusedContainerColor = Color(0xFF161616),
