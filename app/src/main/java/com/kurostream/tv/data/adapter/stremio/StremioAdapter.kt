@@ -13,8 +13,8 @@ class StremioAdapter @Inject constructor(
 ) : AnimeProvider {
     override val name = "Stremio"
 
-    // Default Kitsu anime addon for searching / browsing
-    private val kitsuAddonUrl = "https://anime-kitsu.strem.fun/catalog/anime"
+    // Default Kitsu anime addon base URL
+    private val kitsuAddonUrl = "https://anime-kitsu.strem.fun"
 
     override suspend fun getTrending(): List<Anime> = withContext(Dispatchers.IO) {
         try {
@@ -24,7 +24,7 @@ class StremioAdapter @Inject constructor(
                     id = meta.id,
                     title = meta.name ?: "Unknown",
                     episodes = 0,
-                    year = meta.releaseInfo?.toIntOrNull() ?: 0,
+                    year = meta.releaseInfo?.substringBefore("–")?.trim()?.toIntOrNull() ?: 0,
                     season = 1,
                     posterUrl = meta.poster ?: "",
                     backgroundUrl = meta.background,
@@ -41,13 +41,14 @@ class StremioAdapter @Inject constructor(
     override suspend fun search(query: String): List<Anime> = withContext(Dispatchers.IO) {
         try {
             // Using search catalog for kitsu addon
+            // URL format: /catalog/anime/kitsu-anime-list/search={query}.json
             val response = api.getCatalog("$kitsuAddonUrl/catalog/anime/kitsu-anime-list/search=${query}.json")
             response.metas?.map { meta ->
                 Anime(
                     id = meta.id,
                     title = meta.name ?: "Unknown",
                     episodes = 0,
-                    year = meta.releaseInfo?.toIntOrNull() ?: 0,
+                    year = meta.releaseInfo?.substringBefore("–")?.trim()?.toIntOrNull() ?: 0,
                     season = 1,
                     posterUrl = meta.poster ?: "",
                     backgroundUrl = meta.background,
@@ -63,9 +64,11 @@ class StremioAdapter @Inject constructor(
 
     override suspend fun getStreams(animeId: String, episodeNumber: Int): List<StreamSource> = withContext(Dispatchers.IO) {
         try {
-            // Example using Torrentio for streams (commonly used stremio addon)
-            val torrentioUrl = "https://torrentio.strem.fun/stream/anime"
-            val response = api.getStreams("$torrentioUrl/${animeId}:${episodeNumber}.json")
+            // Example using Torrentio for streams
+            val torrentioUrl = "https://torrentio.strem.fun"
+            // For anime, it usually uses 'series' type in Torrentio for Kitsu IDs
+            val type = if (animeId.startsWith("kitsu")) "series" else "anime"
+            val response = api.getStreams("$torrentioUrl/stream/$type/${animeId}:${episodeNumber}.json")
             response.streams?.mapNotNull { stream ->
                 if (stream.url != null) {
                     StreamSource(

@@ -9,56 +9,94 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.layout.ContentScale
 import androidx.tv.material3.Button
 import androidx.tv.material3.Text
 import androidx.tv.material3.Surface
 import androidx.tv.material3.ClickableSurfaceDefaults
+import coil.compose.AsyncImage
+import com.kurostream.tv.ui.home.FAKE_ANIMES // Temporary for mock data check
 
 @Composable
 fun AnimeDetailScreen(
     animeId: String,
     onPlayClicked: (episodeNumber: Int) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF0F0F0F))
-            .padding(56.dp)
-    ) {
-        Text(
-            text = "Anime Details",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+    // In a real app, we'd fetch this from a ViewModel
+    val anime = remember(animeId) { FAKE_ANIMES.find { it.id == animeId } ?: FAKE_ANIMES.first() }
+
+    Box(modifier = Modifier.fillMaxSize().background(Color(0xFF0F0F0F))) {
+        // Background
+        AsyncImage(
+            model = anime.backgroundUrl ?: anime.posterUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+            alpha = 0.4f
         )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "ID: $animeId",
-            fontSize = 16.sp,
-            color = Color.Gray
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(Color.Transparent, Color(0xFF0F0F0F)),
+                        startY = 0f,
+                        endY = 1000f
+                    )
+                )
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = { onPlayClicked(1) },
-            modifier = Modifier.padding(bottom = 24.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(56.dp)
         ) {
-            Text("Play Episode 1")
-        }
+            Text(
+                text = anime.title,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "${anime.year} • ${anime.status} • Rating: ${anime.rating}",
+                fontSize = 18.sp,
+                color = Color(0xFFA66DFF)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = anime.description ?: "Discover the epic story of ${anime.title}.",
+                fontSize = 16.sp,
+                color = Color(0xFFC0C0C0),
+                modifier = Modifier.width(600.dp),
+                lineHeight = 24.sp
+            )
 
-        Text(
-            text = "Provider Availability",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+            Spacer(modifier = Modifier.height(48.dp))
 
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            ProviderBadge("Stremio Addons")
-            ProviderBadge("CloudStream Plugins")
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Button(
+                    onClick = { onPlayClicked(1) },
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text("Play Now")
+                }
+                
+                Surface(
+                    onClick = { /* Add to list */ },
+                    colors = ClickableSurfaceDefaults.colors(
+                        containerColor = Color(0xFF1E1E1E),
+                        focusedContainerColor = Color(0xFF2A2A2A)
+                    ),
+                    shape = ClickableSurfaceDefaults.shape(RoundedCornerShape(8.dp))
+                ) {
+                    Text(
+                        text = "+ Add to List",
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp),
+                        color = Color.White
+                    )
+                }
+            }
         }
     }
 }

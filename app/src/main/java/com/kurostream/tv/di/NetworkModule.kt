@@ -2,6 +2,7 @@ package com.kurostream.tv.di
 
 import com.kurostream.tv.data.remote.metadata.MetadataApi
 import com.kurostream.tv.data.remote.trailer.TrailerApi
+import com.kurostream.tv.data.adapter.stremio.api.StremioApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideStremioApi(client: OkHttpClient): StremioApi {
+        return Retrofit.Builder()
+            .baseUrl("https://kitsu.strem.io/") // Placeholder base, as we use @Url
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(StremioApi::class.java)
+    }
 
     @Provides
     @Singleton

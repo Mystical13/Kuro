@@ -29,6 +29,7 @@ import com.kurostream.tv.ui.home.HomeScreen
 import com.kurostream.tv.ui.anilist.AniListTabScreen
 import com.kurostream.tv.ui.detail.AnimeDetailScreen
 import com.kurostream.tv.ui.player.PlayerScreen
+import com.kurostream.tv.ui.search.SearchScreen
 
 @Composable
 fun NavGraph() {
@@ -47,16 +48,22 @@ fun NavGraph() {
                     )
                 }
                 composable("discover") {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Discover Screen", color = Color.White)
-                    }
+                    SearchScreen(
+                        onAnimeClick = { anime ->
+                            navController.navigate("detail/${anime.id}")
+                        }
+                    )
                 }
                 composable("my_list") {
                     AniListTabScreen(onSyncClick = {})
                 }
                 composable("settings") {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Settings Screen", color = Color.White)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Settings", color = Color.White, fontSize = 24.sp)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text("App Version 1.0.0 (Clean Architecture)", color = Color.Gray)
+                        }
                     }
                 }
                 composable("detail/{animeId}") { backStackEntry ->
