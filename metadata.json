@@ -1,6 +1,8 @@
 {
-  "name": "",
-  "description": "",
+  "name": "KuroStream TV",
+  "description": "Android TV codebase using Kotlin and Jetpack Compose. Web preview displays instructions.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
