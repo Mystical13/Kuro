@@ -34,8 +34,8 @@ object PlayerModule {
         val trackSelector = DefaultTrackSelector(context).apply {
             setParameters(
                 buildUponParameters()
-                    .setMaxVideoSize(1280, 720) // 720p max resolution constraint
-                    .setForceLowestBitrate(true)
+                    .setMaxVideoSize(1920, 1080) // 1080p native max resolution constraint
+                    .setForceLowestBitrate(false)
             )
         }
 
