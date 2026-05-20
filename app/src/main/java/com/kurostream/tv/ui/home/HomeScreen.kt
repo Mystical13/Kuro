@@ -125,6 +125,10 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             }
         }
 
+        val topRatedAnimes = remember(trendingAnimes) {
+            trendingAnimes.sortedByDescending { it.rating }.take(10)
+        }
+
         // Main Content
         if (focusedAnime != null) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -170,12 +174,12 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                             onAnimeFocused = { focusedAnime = it }
                         )
                     }
-                    if (trendingAnimes.size > 5) {
+                    if (topRatedAnimes.size > 5) {
                         item {
                             Spacer(modifier = Modifier.height(24.dp))
                             CatalogRow(
                                 title = "Top Rated",
-                                animes = trendingAnimes.shuffled().take(10), // Example usage
+                                animes = topRatedAnimes,
                                 onAnimeFocused = { focusedAnime = it }
                             )
                         }
